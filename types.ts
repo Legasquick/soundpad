@@ -36,4 +36,4 @@ export type ResizeDirection = 'n' | 's' | 'e' | 'w' | 'ne' | 'nw' | 'se' | 'sw';
 
 // Minimal Grid constants - Width/Height are now dynamic
 export const GRID_GAP = 8;
-export const MIN_TILE_SIZE = 70; // Smaller default tiles
+export const MIN_TILE_SIZE = 60; // Smaller default tiles
