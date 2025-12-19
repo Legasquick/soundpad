@@ -81,7 +81,7 @@ export const useAudioPlayer = (globalVolume: number) => {
     if (instance.fadeInterval) clearInterval(instance.fadeInterval);
     
     const steps = 20;
-    const intervalTime = 1000 / steps;
+    const intervalTime = 2000 / steps;
     const totalSteps = (duration / 1000) * steps;
     const volStep = (endVol - startVol) / totalSteps;
     
@@ -204,7 +204,7 @@ export const useAudioPlayer = (globalVolume: number) => {
     const idsToStop = Array.from(audioInstances.current.keys());
     idsToStop.forEach((id) => {
       // Use 1 second fade for "Stop All"
-      stopSound(id, true, 1000); 
+      stopSound(id, true, 2000); 
     });
   }, [stopSound]);
 
