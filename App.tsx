@@ -148,9 +148,11 @@ export default function App() {
       const files = e.target.files;
       if(!files) return;
       
+      // Explicitly cast to File[] to avoid 'unknown' type errors
+      const fileArray = Array.from(files) as File[];
       const tempClips = [...clips];
       
-      for (const file of Array.from(files)) {
+      for (const file of fileArray) {
          const spot = findFirstFreeSpot(1, 1, tempClips, gridState.columns);
          
          const name = file.name.replace(/\.[^/.]+$/, "");

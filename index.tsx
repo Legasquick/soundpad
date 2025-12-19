@@ -2,11 +2,23 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
 // Error Boundary Component
-class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error: Error | null }> {
-  constructor(props: { children: React.ReactNode }) {
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  public state: ErrorBoundaryState = { hasError: false, error: null };
+  // Explicitly declare props to satisfy strict compiler checks if standard React.Component mapping fails
+  public declare props: Readonly<ErrorBoundaryProps> & Readonly<{ children?: React.ReactNode }>;
+
+  constructor(props: ErrorBoundaryProps) {
     super(props);
-    this.state = { hasError: false, error: null };
   }
 
   static getDerivedStateFromError(error: Error) {
@@ -20,24 +32,24 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 font-sans text-white">
-          <div className="bg-slate-900 border border-red-900 p-6 rounded-lg max-w-lg w-full">
-            <h1 className="text-xl font-bold text-red-500 mb-2">Ошибка приложения</h1>
-            <p className="text-slate-400 mb-4 text-sm">Приложение аварийно завершило работу.</p>
-            <pre className="bg-black/50 p-3 rounded text-xs text-red-300 overflow-auto mb-4">
+          <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 font-sans text-white">
+            <div className="bg-slate-900 border border-red-900 p-6 rounded-lg max-w-lg w-full">
+              <h1 className="text-xl font-bold text-red-500 mb-2">Ошибка приложения</h1>
+              <p className="text-slate-400 mb-4 text-sm">Приложение аварийно завершило работу.</p>
+              <pre className="bg-black/50 p-3 rounded text-xs text-red-300 overflow-auto mb-4">
               {this.state.error?.message || "Unknown Error"}
             </pre>
-            <button 
-              onClick={() => {
-                  indexedDB.deleteDatabase('SonicGridDB');
-                  window.location.reload();
-              }}
-              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded text-sm w-full"
-            >
-              Сбросить данные и перезагрузить
-            </button>
+              <button
+                  onClick={() => {
+                    indexedDB.deleteDatabase('SonicGridDB');
+                    window.location.reload();
+                  }}
+                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded text-sm w-full"
+              >
+                Сбросить данные и перезагрузить
+              </button>
+            </div>
           </div>
-        </div>
       );
     }
 
@@ -52,11 +64,11 @@ if (!rootElement) {
 
 const root = createRoot(rootElement);
 
-// StrictMode is good for React 19 to catch concurrent issues
+// StrictMode is good for React 19/18 to catch concurrent issues
 root.render(
-  <React.StrictMode>
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
-  </React.StrictMode>
+    <React.StrictMode>
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    </React.StrictMode>
 );

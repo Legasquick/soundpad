@@ -15,7 +15,7 @@ interface GridTileProps {
   onResize: (clip: SoundClip, dir: ResizeDirection, dx: number, dy: number) => void;
 }
 
-export const GridTile = ({ 
+export const GridTile: React.FC<GridTileProps> = ({ 
   clip, 
   isPlaying, 
   isEditMode, 
@@ -26,7 +26,7 @@ export const GridTile = ({
   onDragStart,
   onDragEnd,
   onResize 
-}: GridTileProps) => {
+}) => {
   const resizeStartPos = useRef<{x: number, y: number} | null>(null);
 
   const handleResizePointerDown = (e: React.PointerEvent, dir: ResizeDirection) => {
